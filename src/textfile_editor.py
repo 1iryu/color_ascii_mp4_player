@@ -4,13 +4,7 @@ def make_file_and_add_text(path: str, text):
     f.writelines(text)
     f.close()
 
-
-def write_if_not_written(path: str, text):
-    f = open(path, 'a', encoding="utf-8")
-    f.writelines(text, encoding="utf-8")
-    f.close()
-
-
+    
 def clear_old_text_and_write_text(path: str, text):
     f = open(path, 'x', encoding="utf-8")
     f.writelines(text, encoding="utf-8")
