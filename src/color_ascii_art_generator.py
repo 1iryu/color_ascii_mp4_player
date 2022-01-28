@@ -33,8 +33,7 @@ def resize_image(image, new_width):
     return frame
 
 
-def return_color_ascii_image(image, width: int):
-    image = resize_image(image, width)
+def return_color_ascii_image(image):
     height, width, ch_count = image.shape
     ascii_image = ""
     for i in range(height):
@@ -43,8 +42,7 @@ def return_color_ascii_image(image, width: int):
         for j in range(width):
             BGR = image[i][j]
             RGB = convert_BGR_to_RGB(BGR)
-            ascii_image += color_text.return_color_text_string(
-                PIXEL, RGB[0], RGB[1], RGB[2])
+            ascii_image += color_text.return_color_text_string(PIXEL, RGB[0], RGB[1], RGB[2])
     return ascii_image
 
 
