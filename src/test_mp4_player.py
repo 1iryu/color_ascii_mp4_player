@@ -40,6 +40,7 @@ def set_up(mp4_path: str, new_width: int):
     new_height, new_width, channels = frame.shape[:3]
     height = new_height
     width = new_width
+    
     output_mp4_frame(mp4_path)
     output_color_ascii_txt_by_mp4_frame(new_width)
     convert_mp4_to_mp3(mp4_path)
