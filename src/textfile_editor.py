@@ -1,7 +1,3 @@
-
-
-
-
 # if txt file is not exist , this function would make it. and then write text.
 def make_file_and_add_text(path: str, text):
     f = open(path, 'a')
@@ -30,7 +26,6 @@ def is_written(path: str):
     if(is_exist(path)):
         data = read_txt_file(path)
         if(data != ""):
-
             return True
     else:
         return False
@@ -53,8 +48,6 @@ def is_unwritten_txt_file_or_not_exist(path: str):
 # read
 def read_txt_file(path: str):
     f = open(path, 'r', encoding="utf-8", errors='ignore')
-
     data = f.read()
-
     f.close()
     return data
