@@ -40,11 +40,16 @@ def set_up(mp4_path: str, new_width: int):
     new_height, new_width, channels = frame.shape[:3]
     height = new_height
     width = new_width
-    
     output_mp4_frame(mp4_path)
     output_color_ascii_txt_by_mp4_frame(new_width)
     convert_mp4_to_mp3(mp4_path)
     set_ascii_frame(mp4_path, new_width)
+
+
+
+def play_video_and_sound():
+    thread1 = threading.Thread(target=play_mp3).start()
+    play_mp4()  
 
 
 def set_ascii_frame(mp4_path: str, width: int):
@@ -134,12 +139,9 @@ def progress_bar(current, total, barLength=25):
     progress = float(current) * 100 / total
     arrow = '#' * int(progress / 100 * barLength - 1)
     spaces = ' ' * (barLength - len(arrow))
-    sys.stdout.write('\rProgress: [%s%s] %d%% Frame %d of %d frames' % (
-        arrow, spaces, progress, current, total))
+    sys.stdout.write('\rProgress: [%s%s] %d%% Frame %d of %d frames' % (arrow, spaces, progress, current, total))
 
 
 mp4_path = r""
 set_up(mp4_path, 100)
-thread1 = threading.Thread(target=play_mp3)
-thread1.start()
-play_mp4()
+play_video_and_sound()
