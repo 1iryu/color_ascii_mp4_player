@@ -41,7 +41,8 @@ def is_unwritten_txt_file_or_not_exist(path: str):
 
 # read
 def read_txt_file(path: str):
-    f = open(path, 'r', encoding="utf-8", errors='ignore')
-    data = f.read()
-    f.close()
-    return data
+    if is_exist(path):
+        f = open(path, 'r', encoding="utf-8", errors='ignore')
+        data = f.read()
+        f.close()
+        return data

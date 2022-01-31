@@ -10,6 +10,7 @@ import threading
 import ffmpeg
 import winsound
 import reprint
+import keyboard
 
 
 # if u use command , it should be like this
@@ -40,6 +41,8 @@ def set_up(mp4_path: str, is_resize: bool, new_height : int = 0 ,new_width: int 
     height = new_height
     width = new_width
     resize = is_resize
+    print(height)
+    print(width)
     make_color_ascii_video(mp4_path)
 
 # mp4 -> mp3
@@ -47,7 +50,7 @@ def set_up(mp4_path: str, is_resize: bool, new_height : int = 0 ,new_width: int 
 
 
 def make_color_ascii_video(mp4_path: str):
-    output_mp4_frame(mp4_path, resize, new_width)
+    output_mp4_frame(mp4_path, resize)
     output_color_ascii_txt_by_mp4_frame()
     convert_mp4_to_mp3(mp4_path)
     set_ascii_frame(mp4_path)
@@ -74,11 +77,12 @@ def convert_mp4_to_mp3(path: str):
 #######################################
 # Output image list   function = output_mp4_frame(mp4path)
 #######################################
-def output_mp4_frame(mp4_path: str, resize: bool, new_width: int = 0):
+def output_mp4_frame(mp4_path: str, resize: bool):
+    print(resize)
     if(59 < fps < 61):
-        output_10fps_video_by_30fps_or_60fps_video(mp4_path, True, resize, new_width)
+        output_10fps_video_by_30fps_or_60fps_video(mp4_path, True, resize)
     if(29 < fps < 31):
-        output_10fps_video_by_30fps_or_60fps_video(mp4_path, False, resize, new_width)
+        output_10fps_video_by_30fps_or_60fps_video(mp4_path, False, resize)
     else:
         print("Error : this video is not 60 or 30 fps video")
 
@@ -88,33 +92,36 @@ def output_image(output_path: str, image):
         cv2.imwrite(output_path, image)
 
 
-def output_10fps_video_by_30fps_or_60fps_video(mp4_path: str, is60fps: bool, resize: bool, new_width: int = 0):
+def output_10fps_video_by_30fps_or_60fps_video(mp4_path: str, is60fps: bool, resize: bool):
     num = 0
     length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     while(num < length):
         is_image, frame_img = cap.read()
         if(is60fps):
             if(num % 6 == 0):
-                if(resize): resize_image(frame_img, new_width)
+                if(resize):
+                    frame_img = resize_image(frame_img, width, height)
                 output_image(f"{frame_output_path}\image_frame{num}.jpg", frame_img)
         else:
             if(num % 3 == 0):
-                if(resize): resize_image(frame_img, new_width)
+                if(resize):
+                    frame_img = resize_image(frame_img, width, height)
                 output_image(f"{frame_output_path}\image_frame{num}.jpg", frame_img)
         num += 1
         progress_bar(num + 1, length)
 
 
-def resize_image2(image, new_width, new_height):
+def resize_image(image, new_width, new_height):
     frame = cv2.resize(image, (new_width, new_height))
     return frame
 
-def resize_image(image, new_width):
-    height, width, ch_count = image.shape
-    ratio = (height / float(width * 2.5))
-    new_height = int(new_width * ratio)
-    frame = cv2.resize(image, (new_width, new_height))
-    return frame
+
+# def resize_image(image, new_width):
+#     height, width, ch_count = image.shape
+#     ratio = (height / float(width * 2.5))
+#     new_height = int(new_width * ratio)
+#     frame = cv2.resize(image, (new_width, new_height))
+#     return frame
 
 
 #######################################
@@ -126,9 +133,9 @@ def output_color_ascii_txt_by_mp4_frame():
     total_frame
     while(total_frame > num):
         image = cv2.imread(f"{frame_output_path}\image_frame{num}.jpg")
-        output_path = f"{ascii_output_path}\color_ascii_frame{num}.txt"
-        color_ascii_art_generator.output_ascii_image_as_txt_file(
-            image, output_path)
+        if image is not None:
+            output_path = f"{ascii_output_path}\color_ascii_frame{num}.txt"
+            color_ascii_art_generator.output_ascii_image_as_txt_file(image, output_path)
         progress_bar(num + 1, total_frame)
         num += 1
 
@@ -142,6 +149,7 @@ def play_video():
 
 
 def play_color_ascii_mp4():
+    full_screen()
     now = 0
     fps_timer = fpstimer.FPSTimer(10)
     os.system(f'mode {width}, {height}')
@@ -149,6 +157,11 @@ def play_color_ascii_mp4():
         print(ASCII_LIST[now])
         now += 1
         fps_timer.sleep()
+
+
+def full_screen():
+    keyboard.press('f11')
+
 
 
 def play_mp3():
@@ -161,3 +174,5 @@ def progress_bar(current, total, barLength=25):
     spaces = ' ' * (barLength - len(arrow))
     sys.stdout.write('\rProgress: [%s%s] %d%% Frame %d of %d frames' % (
         arrow, spaces, progress, current, total))
+
+#w 274 h 77
