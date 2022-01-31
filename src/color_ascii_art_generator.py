@@ -11,14 +11,10 @@ def print_ascii_image(image, width: int):
     print(ascii_image)
 
 
-def output_ascii_image_as_txt_file(image, output_path: str, width: int):
-    if textfile_editor.is_unwritten_txt_file_or_not_exist(output_path):
-        resized_img = resize_image(image, width)
-        ascii_image = return_color_ascii_image(resized_img)
-        ascii_image = raw(ascii_image)
-        textfile_editor.write_to_unwritten_txt_file(output_path, ascii_image)
-    else:
-        return
+def output_ascii_image_as_txt_file(image, output_path: str):
+    ascii_image = return_color_ascii_image(resized_img)
+    ascii_image = raw(ascii_image)
+    textfile_editor.write_to_unwritten_txt_file(output_path, ascii_image)
 
 
 def raw(_text):
